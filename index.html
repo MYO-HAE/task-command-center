@@ -19,6 +19,8 @@
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --border: rgba(255, 255, 255, 0.08);
+      --david: #3b82f6;
+      --alice: #a855f7;
     }
     
     body {
@@ -26,34 +28,20 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
-      overflow-x: hidden;
     }
     
-    /* Animated gradient background */
     .bg-gradient {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-      animation: gradientPulse 20s ease-in-out infinite;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
     }
     
-    @keyframes gradientPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.05); }
-    }
-    
     .container {
-      max-width: 900px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 30px 20px;
       position: relative;
       z-index: 1;
     }
@@ -62,13 +50,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
-      animation: slideDown 0.6s ease-out;
-    }
-    
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+      margin-bottom: 24px;
     }
     
     .brand {
@@ -86,392 +68,479 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      box-shadow: 0 4px 20px var(--accent-glow);
     }
     
     .brand-text h1 {
       font-size: 20px;
       font-weight: 600;
-      letter-spacing: -0.02em;
     }
     
     .brand-text p {
       font-size: 13px;
       color: var(--text-secondary);
     }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    .sync-dot.syncing { background: var(--warning); }
+    .sync-dot.error { background: var(--danger); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
     
-    .datetime {
-      text-align: right;
+    .user-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: var(--bg-card);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .user-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-btn:hover { color: var(--text-primary); }
+    .user-btn.active.david { background: var(--david); color: white; }
+    .user-btn.active.alice { background: var(--alice); color: white; }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: var(--bg-card);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .nav-tab {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
       color: var(--text-secondary);
       font-size: 13px;
-    }
-    
-    .datetime .date {
-      color: var(--text-primary);
       font-weight: 500;
-      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    
-    /* Stats Grid */
-    .stats-grid {
+
+    .nav-tab:hover { color: var(--text-primary); }
+    .nav-tab.active { background: var(--accent); color: white; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .health-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-      animation: fadeIn 0.6s ease-out 0.1s both;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    
-    .stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-    
-    /* Input Section */
-    .input-section {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      animation: fadeIn 0.6s ease-out 0.2s both;
-    }
-    
-    .input-row {
-      display: flex;
       gap: 12px;
+      margin-bottom: 20px;
     }
-    
-    .task-input {
-      flex: 1;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 18px;
-      color: var(--text-primary);
-      font-size: 15px;
-      outline: none;
-      transition: all 0.2s ease;
+
+    @media (max-width: 900px) {
+      .health-grid { grid-template-columns: 1fr; }
     }
-    
-    .task-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    
-    .task-input::placeholder {
-      color: var(--text-secondary);
-    }
-    
-    .priority-select {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      color: var(--text-primary);
-      font-size: 15px;
-      outline: none;
-      cursor: pointer;
-      min-width: 120px;
-    }
-    
-    .priority-select:focus {
-      border-color: var(--accent);
-    }
-    
-    .add-btn {
-      background: linear-gradient(135deg, var(--accent), #8b5cf6);
-      border: none;
-      border-radius: 12px;
-      padding: 14px 24px;
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 16px var(--accent-glow);
-    }
-    
-    .add-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
-    }
-    
-    .add-btn:active {
-      transform: translateY(0);
-    }
-    
-    /* Filters */
-    .filters {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      animation: fadeIn 0.6s ease-out 0.3s both;
-    }
-    
-    .filter-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 16px;
-      color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .filter-btn:hover {
-      border-color: var(--accent);
-      color: var(--text-primary);
-    }
-    
-    .filter-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-    
-    /* Task List */
-    .task-list {
-      animation: fadeIn 0.6s ease-out 0.4s both;
-    }
-    
-    .task-item {
+
+    .health-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 12px;
-      display: flex;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .health-card.critical { border-color: var(--danger); }
+    .health-card.warning { border-color: var(--warning); }
+    .health-card.healthy { border-color: var(--success); }
+
+    .health-status {
+      display: inline-flex;
       align-items: center;
-      gap: 16px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: slideIn 0.3s ease-out;
-    }
-    
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    
-    .task-item:hover {
-      border-color: rgba(99, 102, 241, 0.3);
-      transform: translateX(4px);
-    }
-    
-    .task-item.completed {
-      opacity: 0.5;
-    }
-    
-    .task-item.completed .task-text {
-      text-decoration: line-through;
-      color: var(--text-secondary);
-    }
-    
-    .checkbox {
-      width: 24px;
-      height: 24px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    
-    .checkbox:hover {
-      border-color: var(--accent);
-    }
-    
-    .checkbox.checked {
-      background: var(--success);
-      border-color: var(--success);
-    }
-    
-    .checkbox.checked::after {
-      content: '✓';
-      color: white;
-      font-size: 14px;
-      font-weight: 700;
-    }
-    
-    .task-content {
-      flex: 1;
-    }
-    
-    .task-text {
-      font-size: 15px;
-      color: var(--text-primary);
-      transition: all 0.2s ease;
-    }
-    
-    .task-meta {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-    }
-    
-    .priority-badge {
-      font-size: 11px;
+      gap: 6px;
+      font-size: 12px;
       font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .priority-p0 { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-    .priority-p1 { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-    .priority-p2 { background: rgba(99, 102, 241, 0.2); color: var(--accent); }
-    .priority-p3 { background: rgba(148, 163, 184, 0.2); color: var(--text-secondary); }
-    
-    .task-actions {
-      display: flex;
-      gap: 8px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    
-    .task-item:hover .task-actions {
-      opacity: 1;
-    }
-    
-    .action-btn {
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: var(--bg-secondary);
-      border-radius: 8px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      font-size: 14px;
-    }
-    
-    .action-btn:hover {
-      background: var(--danger);
-      color: white;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-secondary);
-      animation: fadeIn 0.6s ease-out;
-    }
-    
-    .empty-state .icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-    
-    .empty-state h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
+      padding: 4px 10px;
+      border-radius: 20px;
       margin-bottom: 8px;
     }
-    
-    /* Confetti animation for completion */
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-      animation: confetti-fall 1s ease-out forwards;
+
+    .health-status.critical { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .health-status.warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .health-status.healthy { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+
+    .health-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
     }
-    
-    @keyframes confetti-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100px) rotate(720deg); opacity: 0; }
-    }
-    
-    /* Progress bar */
-    .progress-section {
+
+    .health-dot.critical { background: var(--danger); animation: pulse 2s infinite; }
+    .health-dot.warning { background: var(--warning); }
+    .health-dot.healthy { background: var(--success); }
+
+    .health-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .health-schedule { font-size: 12px; color: var(--text-secondary); }
+
+    .learning-track {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 20px;
-      margin-bottom: 24px;
-      animation: fadeIn 0.6s ease-out 0.15s both;
+      margin-bottom: 16px;
     }
-    
-    .progress-header {
+
+    .track-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
-    
-    .progress-header h3 {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .progress-percent {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    
+
+    .track-title { font-size: 16px; font-weight: 600; }
+    .track-progress { font-size: 13px; color: var(--text-secondary); }
+
     .progress-bar {
       height: 8px;
       background: var(--bg-secondary);
       border-radius: 4px;
       overflow: hidden;
+      margin-bottom: 12px;
     }
-    
+
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), #8b5cf6);
       border-radius: 4px;
-      transition: width 0.5s ease;
-      box-shadow: 0 0 10px var(--accent-glow);
+      transition: width 0.3s ease;
+    }
+
+    .topic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .topic-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      padding: 8px;
+      border-radius: 6px;
+      background: var(--bg-secondary);
+    }
+
+    .topic-item.done { color: var(--success); }
+    .topic-item.current { color: var(--accent); font-weight: 500; }
+    .topic-item.pending { color: var(--text-secondary); }
+
+    .topic-check { width: 18px; text-align: center; }
+
+    .user-btn .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
     }
     
-    /* Responsive */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .add-task-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .add-task-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .task-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .task-input:focus { border-color: var(--accent); }
+
+    .task-select {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+      min-width: 100px;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+    .add-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 1200px) {
+      .kanban-board { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 600px) {
-      .stats-grid { grid-template-columns: 1fr; }
-      .input-row { flex-direction: column; }
-      .priority-select { width: 100%; }
-      .add-btn { width: 100%; }
-      .task-actions { opacity: 1; }
+      .kanban-board { grid-template-columns: 1fr; }
+    }
+
+    .kanban-column {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 300px;
+    }
+
+    .kanban-column.todo { border-top: 3px solid #3b82f6; }
+    .kanban-column.inprogress { border-top: 3px solid #f59e0b; }
+    .kanban-column.review { border-top: 3px solid #8b5cf6; }
+    .kanban-column.done { border-top: 3px solid #22c55e; }
+
+    .kanban-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .kanban-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .kanban-count {
+      background: var(--bg-secondary);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .kanban-tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .kanban-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: grab;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .kanban-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .kanban-card.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+      transform: rotate(2deg);
+    }
+
+    .kanban-column.drag-over {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--accent);
+    }
+
+    .kanban-column {
+      transition: background 0.2s ease;
+    }
+
+    .kanban-card-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .kanban-card-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .kanban-tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .kanban-tag.priority-p0 { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .kanban-tag.priority-p1 { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .kanban-tag.priority-p2 { background: rgba(99, 102, 241, 0.2); color: #6366f1; }
+    .kanban-tag.due-soon { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+    .assignee-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .assignee-badge.david { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .assignee-badge.alice { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .message {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      animation: slideUp 0.3s ease;
+      z-index: 100;
+    }
+
+    .message.success { background: var(--success); color: white; }
+    .message.error { background: var(--danger); color: white; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -484,222 +553,487 @@
         <div class="brand-icon">◆</div>
         <div class="brand-text">
           <h1>Task Command Center</h1>
-          <p>David Kim — Chief of Staff</p>
+          <p>David Kim — CEO</p>
+          <div class="sync-status">
+            <span class="sync-dot" id="sync-dot"></span>
+            <span id="sync-text">Loading...</span>
+          </div>
         </div>
       </div>
-      <div class="datetime">
-        <div class="date" id="current-date">Loading...</div>
-        <div id="current-time">Loading...</div>
-      </div>
     </header>
-    
+
+    <div class="user-toggle">
+      <button class="user-btn david active" id="btn-david" onclick="setUser('David')">
+        <span class="avatar">DK</span>
+        David (CEO)
+      </button>
+      <button class="user-btn alice" id="btn-alice" onclick="setUser('Alice')">
+        <span class="avatar">AL</span>
+        Alice (Chief of Staff)
+      </button>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('tasks')">📋 Tasks</button>
+      <button class="nav-tab" onclick="switchTab('health')">🏥 System Health</button>
+      <button class="nav-tab" onclick="switchTab('learning')">📚 Learning</button>
+    </div>
+
+    <!-- TASKS TAB -->
+    <div id="tab-tasks" class="tab-content active">
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-value" id="stat-total">-</div>
         <div class="stat-label">Total Tasks</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="stat-active">0</div>
-        <div class="stat-label">Active</div>
+        <div class="stat-value" id="stat-todo">-</div>
+        <div class="stat-label">To Do</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="stat-completed">0</div>
-        <div class="stat-label">Completed</div>
+        <div class="stat-value" id="stat-inprogress">-</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-done">-</div>
+        <div class="stat-label">Done</div>
       </div>
     </div>
-    
-    <div class="progress-section">
-      <div class="progress-header">
-        <h3>Daily Progress</h3>
-        <span class="progress-percent" id="progress-percent">0%</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-      </div>
-    </div>
-    
-    <div class="input-section">
-      <div class="input-row">
-        <input type="text" class="task-input" id="task-input" placeholder="What needs to be done?">
-        <select class="priority-select" id="priority-select">
-          <option value="p0">🔥 P0 Critical</option>
-          <option value="p1" selected>⚡ P1 High</option>
-          <option value="p2">📌 P2 Normal</option>
-          <option value="p3">💤 P3 Low</option>
+
+    <div class="add-task-section">
+      <div class="add-task-form">
+        <input type="text" class="task-input" id="task-name" placeholder="Add a new task...">
+        <select class="task-select" id="task-priority">
+          <option value="P0">P0</option>
+          <option value="P1" selected>P1</option>
+          <option value="P2">P2</option>
         </select>
-        <button class="add-btn" onclick="addTask()">Add Task</button>
+        <select class="task-select" id="task-assignee">
+          <option value="David">David</option>
+          <option value="Alice">Alice</option>
+        </select>
+        <input type="date" class="task-select" id="task-due">
+        <button class="add-btn" id="add-btn" onclick="addTask()">Add Task</button>
       </div>
     </div>
-    
-    <div class="filters">
-      <button class="filter-btn active" onclick="setFilter('all')">All Tasks</button>
-      <button class="filter-btn" onclick="setFilter('active')">Active</button>
-      <button class="filter-btn" onclick="setFilter('completed')">Completed</button>
-    </div>
-    
-    <div class="task-list" id="task-list">
-      <div class="empty-state">
-        <div class="icon">📝</div>
-        <h3>No tasks yet</h3>
-        <p>Add your first task above to get started</p>
+
+    <div class="kanban-board" id="kanban-board">
+      <div class="kanban-column todo">
+        <div class="kanban-header">
+          <span class="kanban-title">To Do</span>
+          <span class="kanban-count" id="count-todo">0</span>
+        </div>
+        <div class="kanban-tasks" id="kanban-todo">
+          <div class="loading"><div class="spinner"></div>Loading...</div>
+        </div>
+      </div>
+
+      <div class="kanban-column inprogress">
+        <div class="kanban-header">
+          <span class="kanban-title">In Progress</span>
+          <span class="kanban-count" id="count-inprogress">0</span>
+        </div>
+        <div class="kanban-tasks" id="kanban-inprogress">
+          <div class="loading"><div class="spinner"></div>Loading...</div>
+        </div>
+      </div>
+
+      <div class="kanban-column review">
+        <div class="kanban-header">
+          <span class="kanban-title">Review</span>
+          <span class="kanban-count" id="count-review">0</span>
+        </div>
+        <div class="kanban-tasks" id="kanban-review">
+          <div class="loading"><div class="spinner"></div>Loading...</div>
+        </div>
+      </div>
+
+      <div class="kanban-column done">
+        <div class="kanban-header">
+          <span class="kanban-title">Done</span>
+          <span class="kanban-count" id="count-done">0</span>
+        </div>
+        <div class="kanban-tasks" id="kanban-done">
+          <div class="loading"><div class="spinner"></div>Loading...</div>
+        </div>
       </div>
     </div>
   </div>
-  
+  </div>
+  <!-- END TASKS TAB -->
+
+  <!-- HEALTH TAB -->
+  <div id="tab-health" class="tab-content">
+    <div class="health-grid">
+      <div class="health-card healthy">
+        <div class="health-status healthy"><span class="health-dot healthy"></span>HEALTHY</div>
+        <div class="health-name">Morning Brief</div>
+        <div class="health-schedule">Daily at 08:00 KST</div>
+      </div>
+      <div class="health-card healthy">
+        <div class="health-status healthy"><span class="health-dot healthy"></span>HEALTHY</div>
+        <div class="health-name">Heartbeat (09:00)</div>
+        <div class="health-schedule">Daily at 09:00 KST</div>
+      </div>
+      <div class="health-card healthy">
+        <div class="health-status healthy"><span class="health-dot healthy"></span>HEALTHY</div>
+        <div class="health-name">Heartbeat (15:00)</div>
+        <div class="health-schedule">Daily at 15:00 KST</div>
+      </div>
+      <div class="health-card healthy">
+        <div class="health-status healthy"><span class="health-dot healthy"></span>HEALTHY</div>
+        <div class="health-name">Heartbeat (21:00)</div>
+        <div class="health-schedule">Daily at 21:00 KST</div>
+      </div>
+      <div class="health-card warning">
+        <div class="health-status warning"><span class="health-dot warning"></span>WARNING</div>
+        <div class="health-name">Nightly Build</div>
+        <div class="health-schedule">Daily at 01:00 KST</div>
+      </div>
+      <div class="health-card healthy">
+        <div class="health-status healthy"><span class="health-dot healthy"></span>HEALTHY</div>
+        <div class="health-name">Health Check</div>
+        <div class="health-schedule">Multiple times daily</div>
+      </div>
+    </div>
+    <div class="learning-track">
+      <div class="track-header">
+        <div class="track-title">Recent System Events</div>
+      </div>
+      <div class="topic-list">
+        <div class="topic-item done"><span class="topic-check">✓</span> 09:00 Heartbeat — Completed successfully</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Morning Brief — Delivered at 08:00 KST</div>
+        <div class="topic-item current"><span class="topic-check">⟳</span> Nightly Build — Deploy pending (token issue)</div>
+      </div>
+    </div>
+  </div>
+  <!-- END HEALTH TAB -->
+
+  <!-- LEARNING TAB -->
+  <div id="tab-learning" class="tab-content">
+    <div class="learning-track">
+      <div class="track-header">
+        <div class="track-title">🐍 Python (CS50P)</div>
+        <div class="track-progress">Week 4 of 9</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 44%"></div>
+      </div>
+      <div class="topic-list">
+        <div class="topic-item done"><span class="topic-check">✓</span> Week 0: Functions</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Week 1: Conditionals</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Week 2: Loops</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Week 3: Exceptions</div>
+        <div class="topic-item current"><span class="topic-check">→</span> Week 4: Libraries (current)</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Week 5: Unit Tests</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Week 6: File I/O</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Week 7: Regex</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Week 8: OOP</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Week 9: Et Cetera</div>
+      </div>
+    </div>
+
+    <div class="learning-track">
+      <div class="track-header">
+        <div class="track-title">📐 Math for AI/ML</div>
+        <div class="track-progress">Module 2 of 4</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 50%"></div>
+      </div>
+      <div class="topic-list">
+        <div class="topic-item done"><span class="topic-check">✓</span> Linear Algebra: Vectors</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Linear Algebra: Matrices</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Linear Algebra: Dot Product</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Calculus: Derivatives</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Calculus: Chain Rule</div>
+        <div class="topic-item done"><span class="topic-check">✓</span> Calculus: Gradient Descent</div>
+        <div class="topic-item current"><span class="topic-check">→</span> Probability: Distributions (current)</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Probability: Bayes Theorem</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Optimization: SGD</div>
+        <div class="topic-item pending"><span class="topic-check">○</span> Optimization: Regularization</div>
+      </div>
+    </div>
+  </div>
+  <!-- END LEARNING TAB -->
+
   <script>
-    // State
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    let currentFilter = 'all';
+    const PROXY_URL = 'https://notion-proxy.rla-alstn.workers.dev';
+    let currentUser = 'David';
+    let allTasks = [];
     
-    // Initialize
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    renderTasks();
-    updateStats();
+    document.getElementById('task-assignee').value = currentUser;
+    fetchTasks();
+    setInterval(fetchTasks, 60000);
     
-    // Date/Time
-    function updateDateTime() {
-      const now = new Date();
-      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', dateOptions);
-      document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }
-    
-    // Add task
-    function addTask() {
-      const input = document.getElementById('task-input');
-      const prioritySelect = document.getElementById('priority-select');
-      const text = input.value.trim();
-      
-      if (!text) return;
-      
-      const task = {
-        id: Date.now(),
-        text: text,
-        priority: prioritySelect.value,
-        completed: false,
-        createdAt: new Date().toISOString()
-      };
-      
-      tasks.unshift(task);
-      saveTasks();
-      
-      input.value = '';
-      renderTasks();
+    function setUser(user) {
+      currentUser = user;
+      document.getElementById('btn-david').className = user === 'David' ? 'user-btn david active' : 'user-btn david';
+      document.getElementById('btn-alice').className = user === 'Alice' ? 'user-btn alice active' : 'user-btn alice';
+      document.getElementById('task-assignee').value = user;
+      renderKanban();
       updateStats();
     }
-    
-    // Toggle complete
-    function toggleComplete(id) {
-      const task = tasks.find(t => t.id === id);
-      if (task) {
-        task.completed = !task.completed;
-        saveTasks();
-        renderTasks();
-        updateStats();
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    async function fetchTasks() {
+      const dot = document.getElementById('sync-dot');
+      const text = document.getElementById('sync-text');
+      dot.className = 'sync-dot syncing';
+      text.textContent = 'Syncing...';
+      
+      try {
+        const response = await fetch(PROXY_URL + '/tasks');
+        const data = await response.json();
         
-        if (task.completed) {
-          spawnConfetti();
+        if (data.success) {
+          allTasks = data.tasks;
+          renderKanban();
+          updateStats();
+          dot.className = 'sync-dot';
+          text.textContent = 'Synced: ' + new Date().toLocaleTimeString();
         }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        dot.className = 'sync-dot error';
+        text.textContent = 'Sync failed';
+        document.getElementById('kanban-todo').innerHTML = '<div class="empty-state">Error loading tasks. Check console.</div>';
       }
     }
     
-    // Delete task
-    function deleteTask(id) {
-      tasks = tasks.filter(t => t.id !== id);
-      saveTasks();
-      renderTasks();
-      updateStats();
-    }
-    
-    // Set filter
-    function setFilter(filter) {
-      currentFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      renderTasks();
-    }
-    
-    // Render
-    function renderTasks() {
-      const list = document.getElementById('task-list');
+    async function addTask() {
+      const name = document.getElementById('task-name').value.trim();
+      const priority = document.getElementById('task-priority').value;
+      const assignee = document.getElementById('task-assignee').value;
+      const due = document.getElementById('task-due').value;
       
-      let filteredTasks = tasks;
-      if (currentFilter === 'active') filteredTasks = tasks.filter(t => !t.completed);
-      if (currentFilter === 'completed') filteredTasks = tasks.filter(t => t.completed);
-      
-      if (filteredTasks.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">${currentFilter === 'completed' ? '✨' : '📝'}</div>
-            <h3>${currentFilter === 'completed' ? 'No completed tasks' : 'No tasks yet'}</h3>
-            <p>${currentFilter === 'completed' ? 'Complete some tasks to see them here' : 'Add your first task above to get started'}</p>
-          </div>
-        `;
+      if (!name) {
+        showMessage('Please enter a task name', 'error');
         return;
       }
       
-      list.innerHTML = filteredTasks.map(task => `
-        <div class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}">
-          <div class="checkbox ${task.completed ? 'checked' : ''}" onclick="toggleComplete(${task.id})"></div>
-          <div class="task-content">
-            <div class="task-text">${escapeHtml(task.text)}</div>
-            <div class="task-meta">
-              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
-            </div>
-          </div>
-          <div class="task-actions">
-            <button class="action-btn" onclick="deleteTask(${task.id})">✕</button>
-          </div>
-        </div>
-      `).join('');
+      const btn = document.getElementById('add-btn');
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+      
+      try {
+        const response = await fetch(PROXY_URL + '/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, priority, assignee, due, status: 'Todo' })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          document.getElementById('task-name').value = '';
+          document.getElementById('task-due').value = '';
+          showMessage('Task added!', 'success');
+          await fetchTasks();
+        } else {
+          showMessage('Failed: ' + (data.error || 'Unknown'), 'error');
+        }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Add Task';
+      }
     }
     
-    // Stats
     function updateStats() {
-      const total = tasks.length;
-      const completed = tasks.filter(t => t.completed).length;
-      const active = total - completed;
-      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+      const userTasks = allTasks.filter(t => t.assignee === currentUser);
+      const total = userTasks.length;
+      const todo = userTasks.filter(t => !t.status || t.status === 'Todo').length;
+      const inprogress = userTasks.filter(t => t.status === 'In Progress').length;
+      const done = userTasks.filter(t => t.status === 'Done').length;
       
       document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-active').textContent = active;
-      document.getElementById('stat-completed').textContent = completed;
-      document.getElementById('progress-percent').textContent = percent + '%';
-      document.getElementById('progress-fill').style.width = percent + '%';
+      document.getElementById('stat-todo').textContent = todo;
+      document.getElementById('stat-inprogress').textContent = inprogress;
+      document.getElementById('stat-done').textContent = done;
+      
+      document.getElementById('count-todo').textContent = todo;
+      document.getElementById('count-inprogress').textContent = inprogress;
+      document.getElementById('count-review').textContent = userTasks.filter(t => t.status === 'Review').length;
+      document.getElementById('count-done').textContent = done;
     }
     
-    // Save
-    function saveTasks() {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+    let draggedTaskId = null;
+
+    function renderKanban() {
+      const userTasks = allTasks.filter(t => t.assignee === currentUser);
+      
+      const columns = {
+        'Todo': document.getElementById('kanban-todo'),
+        'In Progress': document.getElementById('kanban-inprogress'),
+        'Review': document.getElementById('kanban-review'),
+        'Done': document.getElementById('kanban-done')
+      };
+      
+      Object.values(columns).forEach(col => {
+        col.innerHTML = '';
+        // Add drag handlers to columns
+        col.ondragover = handleDragOver;
+        col.ondragleave = handleDragLeave;
+        col.ondrop = handleDrop;
+      });
+      
+      const sortedTasks = [...userTasks].sort((a, b) => {
+        const order = { 'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3, null: 4 };
+        return (order[a.priority] || 4) - (order[b.priority] || 4);
+      });
+      
+      sortedTasks.forEach(task => {
+        const status = task.status || 'Todo';
+        const col = columns[status] || columns['Todo'];
+        
+        const card = document.createElement('div');
+        card.className = 'kanban-card';
+        card.draggable = true;
+        card.dataset.taskId = task.id;
+        card.dataset.status = status;
+        
+        // Drag handlers
+        card.ondragstart = handleDragStart;
+        card.ondragend = handleDragEnd;
+        
+        let metaHtml = '';
+        if (task.priority) {
+          metaHtml += '<span class="kanban-tag priority-' + task.priority.toLowerCase() + '">' + task.priority + '</span>';
+        }
+        if (task.due) {
+          const overdue = new Date(task.due) < new Date();
+          metaHtml += '<span class="kanban-tag ' + (overdue ? 'due-soon' : '') + '">' + formatDate(task.due) + '</span>';
+        }
+        metaHtml += '<span class="assignee-badge ' + (task.assignee || 'david').toLowerCase() + '">' + (task.assignee || 'David') + '</span>';
+        
+        card.innerHTML = '<div class="kanban-card-title">' + escapeHtml(task.name) + '</div><div class="kanban-card-meta">' + metaHtml + '</div>';
+        
+        card.onclick = function(e) {
+          if (!draggedTaskId) {
+            window.open('https://www.notion.so/s7yle/' + task.id.replace(/-/g, ''), '_blank');
+          }
+        };
+        col.appendChild(card);
+      });
+      
+      Object.entries(columns).forEach(([status, col]) => {
+        if (col.children.length === 0) {
+          col.innerHTML = '<div class="empty-state">No tasks</div>';
+        }
+      });
+    }
+
+    function handleDragStart(e) {
+      draggedTaskId = this.dataset.taskId;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', draggedTaskId);
+    }
+
+    function handleDragEnd(e) {
+      this.classList.remove('dragging');
+      draggedTaskId = null;
+      // Remove drag-over from all columns
+      document.querySelectorAll('.kanban-column').forEach(col => {
+        col.classList.remove('drag-over');
+      });
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      this.closest('.kanban-column').classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      this.closest('.kanban-column').classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      const column = this.closest('.kanban-column');
+      column.classList.remove('drag-over');
+      
+      const taskId = e.dataTransfer.getData('text/plain');
+      const newStatus = getStatusFromColumn(column);
+      
+      if (taskId && newStatus) {
+        updateTaskStatus(taskId, newStatus);
+      }
+    }
+
+    function getStatusFromColumn(column) {
+      if (column.classList.contains('todo')) return 'Todo';
+      if (column.classList.contains('inprogress')) return 'In Progress';
+      if (column.classList.contains('review')) return 'Review';
+      if (column.classList.contains('done')) return 'Done';
+      return null;
+    }
+
+    async function updateTaskStatus(taskId, newStatus) {
+      showMessage('Updating...', 'success');
+      
+      try {
+        const response = await fetch(PROXY_URL + '/tasks/' + taskId, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Update local task and re-render
+          const task = allTasks.find(t => t.id === taskId);
+          if (task) {
+            task.status = newStatus;
+            renderKanban();
+            updateStats();
+            showMessage('Status updated!', 'success');
+          }
+        } else {
+          showMessage('Failed: ' + (data.error || 'Unknown'), 'error');
+          await fetchTasks(); // Refresh to get correct state
+        }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+        await fetchTasks();
+      }
     }
     
-    // Utility
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     }
     
-    // Confetti
-    function spawnConfetti() {
-      const colors = ['#6366f1', '#8b5cf6', '#22c55e', '#f59e0b', '#ef4444'];
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * window.innerWidth + 'px';
-          confetti.style.top = '50%';
-          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-          document.body.appendChild(confetti);
-          setTimeout(() => confetti.remove(), 1000);
-        }, i * 30);
-      }
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const diff = Math.floor((date - today) / (1000 * 60 * 60 * 24));
+      if (diff < 0) return 'Overdue';
+      if (diff === 0) return 'Today';
+      if (diff === 1) return 'Tomorrow';
+      return (date.getMonth() + 1) + '/' + date.getDate();
     }
     
-    // Enter key
-    document.getElementById('task-input').addEventListener('keypress', (e) => {
+    function showMessage(text, type) {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + type;
+      msg.textContent = text;
+      document.body.appendChild(msg);
+      setTimeout(function() { msg.remove(); }, 3000);
+    }
+    
+    document.getElementById('task-name').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') addTask();
     });
   </script>
